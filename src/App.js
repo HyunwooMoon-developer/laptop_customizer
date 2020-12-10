@@ -1,53 +1,53 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from 'react';
-import Header from './Header'
-import Main from './Main'
+import Header from './Header/Header'
+import Form from './Form/Form'
+import Cart from './Cart/Cart'
 
 // Normalizes string as a slug - a string that is safe to use
 // in both URLs and html attributes
 //import slugify from 'slugify';
 
 import './App.css';
+import FEATURES from './FEATURES';
 
 // This object will allow us to
 // easily convert numbers into US dollar values
-const USCurrencyFormat = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD'
-});
-
 class App extends Component {
-  state = {
-    selected: {
-      Processor: {
-        name: '17th Generation Intel Core HB (7 Core with donut spare)',
-        cost: 700
-      },
-      'Operating System': {
-        name: 'Ubuntu Linux 16.04',
-        cost: 200
-      },
-      'Video Card': {
-        name: 'Toyota Corolla 1.5v',
-        cost: 1150.98
-      },
-      Display: {
-        name: '15.6" UHD (3840 x 2160) 60Hz Bright Lights and Knobs',
-        cost: 1500
-      }
-    }
-  };
+state = {
+  item: FEATURES,
+  selected: {
+    Processor: {
+      name: "17th Generation Intel Core HB (7 Core with donut spare)",
+      cost: 700,
+    },
+    "Operating System": {
+      name: "Ubuntu Linux 16.04",
+      cost: 200,
+    },
+    "Video Card": {
+      name: "Toyota Corolla 1.5v",
+      cost: 1150.98,
+    },
+    Display: {
+      name: '15.6" UHD (3840 x 2160) 60Hz Bright Lights and Knobs',
+      cost: 1500,
+    },
+  },
+};
 
-  updateFeature = (feature, newValue) => {
-    const selected = Object.assign({}, this.state.selected);
-    selected[feature] = newValue;
-    this.setState({
-      selected
-    });
-  };
+updateFeature = (feature, newValue) => {
+  const newSelected = Object.assign({}, this.state.selected);
+  newSelected[feature] = newValue;
+  this.setState({
+    lists: FEATURES,
+    selected: newSelected,
+  });
+};
 
   render() {
-   /* const features = Object.keys(this.props.features).map((feature, idx) => {
+    const {item, selected} = this.state;
+   /*const features = Object.keys(this.props.features).map((feature, idx) => {
       const featureHash = feature + '-' + idx;
       const options = this.props.features[feature].map(item => {
         const itemHash = slugify(JSON.stringify(item));
@@ -98,10 +98,16 @@ class App extends Component {
       0
     );
 */
+
     return (
       <div className="App">
         <Header />
-        <Main features={this.props.features} selected={this.state.selected} updateFeature={this.updateFeature}/>
+        <main>
+        <Form featureList={item} 
+              selected={selected}
+              onItemChange={this.updateFeature}/>
+        <Cart selected={selected} />
+        </main>
       </div>
     );
   }
